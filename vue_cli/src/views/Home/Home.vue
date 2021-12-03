@@ -16,7 +16,7 @@
                 </div>
             </el-card>
 
-            <el-card style=" margin-top:20px">
+            <el-card style=" margin-top:20px" >
                 <el-table :data="tableData">
                     <el-table-column
                         show-overflow-tooltip 
@@ -39,12 +39,21 @@
                     :key="item.name" 
                     :body-style="{display:'flex',padding:0}" 
                 >
-                    <i class="icon" :class="`el-icon-${item.icon}`" :style="{background: item.color}"></i>
+                    <i class="icon" 
+                        :class="`el-icon-${item.icon}`" 
+                        :style="{ background: item.color }"
+                    ></i>
                     <div class="detail">
                         <p class="num">￥{{item.value}}</p>
                          <p class="txt">￥{{item.name}}</p>
                     </div>
                 </el-card>
+            </div>
+
+            <el-card shadow="hover" style="height:280px"></el-card>
+            <div class="graph">
+                <el-card shadow="hover" style="height:260px"></el-card>
+                <el-card shadow="hover" style="height:260px"></el-card>
             </div>
         </el-col>
         
@@ -147,6 +156,16 @@ export default {
             ]
         }
     },
+    mounted(){
+        this.$http
+            .get('/user?ID=12345')
+        .then(function (response) {    
+            console.log(response);
+        })
+        .catch(function (error) {
+             console.log(error);
+        })
+    }
 }
 </script>
 
