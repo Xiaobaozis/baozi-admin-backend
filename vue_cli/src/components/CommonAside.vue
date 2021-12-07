@@ -121,22 +121,18 @@
   }
 </script>
 
-<style>
- .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
-    height: 100%;
-  }
-  .el-aside {
-    text-align: left;
-  }
-
+<style lang="scss" scoped>
+.el-menu {
+  height: 100%;
+  border: none;
   h3 {
+    color: #ffffff;
     text-align: center;
-    color: #fff;
+    line-height: 48px;
   }
-  .el-menu--collapse {
-      height: 100%;
-  }
-
-  
+}
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+}
 </style>

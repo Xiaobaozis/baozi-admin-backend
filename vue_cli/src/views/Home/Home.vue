@@ -17,7 +17,7 @@
             </el-card>
 
             <el-card style=" margin-top:20px" >
-                <el-table :data="tableData">
+                <el-table :data="tableData" style="height:520px">
                     <el-table-column
                         show-overflow-tooltip 
                         v-for="(val,key) in tableLabel"
@@ -50,10 +50,10 @@
                 </el-card>
             </div>
 
-            <el-card shadow="hover" style="height:280px"></el-card>
+            <el-card shadow="hover" style="height:350px"></el-card>
             <div class="graph">
-                <el-card shadow="hover" style="height:260px"></el-card>
-                <el-card shadow="hover" style="height:260px"></el-card>
+                <el-card shadow="hover" style="height:300px"></el-card>
+                <el-card shadow="hover" style="height:300px"></el-card>
             </div>
         </el-col>
         
