@@ -17,7 +17,7 @@
             </el-card>
 
             <el-card style=" margin-top:20px" >
-                <el-table :data="tableData" style="height:520px">
+                <el-table :data="tableData" style="height:540px">
                     <el-table-column
                         show-overflow-tooltip 
                         v-for="(val,key) in tableLabel"
@@ -50,10 +50,16 @@
                 </el-card>
             </div>
 
-            <el-card shadow="hover" style="height:350px"></el-card>
+            <el-card shadow="hover" style="height:360px" >
+                <div style="height:350px" ref="echart"></div>
+            </el-card>
             <div class="graph">
-                <el-card shadow="hover" style="height:300px"></el-card>
-                <el-card shadow="hover" style="height:300px"></el-card>
+                <el-card shadow="hover" style="height:310px">
+                    <div style="height:300px" ref="echartUser"></div>
+                </el-card>
+                <el-card shadow="hover" style="height:310px">
+                     <div style="height:300px" ref="echartVideo"></div>
+                </el-card>
             </div>
         </el-col>
         
@@ -61,55 +67,16 @@
 </template>
 
 <script>
+//引入css
 import "@/assets/scss/home.scss";
+
+import { getHome } from "../../api/data";
+import * as echarts from 'echarts'
 export default {
     data() {
         return {
-          userImg:require('../../assets/images/wy.jpg') ,
-          tableData:[
-                {
-                    name:"oppo",
-                    todayBuy:100,
-                    monthBuy:300,
-                    totalBuy:800,
-                },
-                {
-                    name:"vivo",
-                    todayBuy:100,
-                    monthBuy:300,
-                    totalBuy:800,
-                },
-                {
-                    name:"苹果",
-                    todayBuy:100,
-                    monthBuy:300,
-                    totalBuy:800,
-                },
-                {
-                    name:"华为",
-                    todayBuy:100,
-                    monthBuy:300,
-                    totalBuy:800,
-                },
-                {
-                    name:"小米",
-                    todayBuy:100,
-                    monthBuy:300,
-                    totalBuy:800,
-                },
-                {
-                    name:"三星",
-                    todayBuy:100,
-                    monthBuy:300,
-                    totalBuy:800,
-                },
-                {
-                    name:"魅族",
-                    todayBuy:100,
-                    monthBuy:300,
-                    totalBuy:800,
-                },          
-            ],
+            userImg:require('../../assets/images/wy.jpg') ,
+            tableData:[],
             tableLabel:{
                 name :"课程",
                 totalBuy:"今日购买",
@@ -118,53 +85,194 @@ export default {
             },
             countData:[
                 {
-                    name:"今日支付订单",
+                    name:"今日支付订单1",
                     value:1234,
                     icon:'success',
                     color:'#2ec7c9',
                 },
                 {
-                    name:"今日收藏订单",
+                    name:"今日收藏订单2",
                     value:120,
                     icon:'star-on',
                     color:'#ffb980',
                 },
                 {
-                    name:"今日未支付订单",
+                    name:"今日未支付订单1",
                     value:1234,
                     icon:'s-goods',
                     color:'#5ab1ef',
                 },
                 {
-                    name:"今日支付订单",
+                    name:"今日支付订单2",
                     value:120,
                     icon:'success',
                     color:'#2ec7c9',
                 },
                 {
-                    name:"今日收藏订单",
+                    name:"今日收藏订单1",
                     value:1234,
                     icon:'star-on',
                     color:'#ffb980',
                 },
                 {
-                    name:"今日未支付订单",
+                    name:"今日未支付订单2",
                     value:1234,
                     icon:'s-goods',
                     color:'#5ab1ef',
                 },
-            ]
-        }
+            ],
+            echartsData:{
+                order: {
+                    legend:{
+                        textStyle:{
+                        color:"#333"
+                        }
+                    },
+                    grid:{
+                        left:"20%"
+                    },
+                    tooltip:{
+                        trigger: "axis"
+                    },
+                    xAxis:{
+                        type:"category",
+                        data:[],
+                        axisLine:{
+                            LineStyle:{
+                                color:"#17b3a3"
+                            }
+                        },
+                        axisLable:{
+                            interval:0,
+                            color:"#333"
+                        }      
+                    },
+                    yAxis:[
+                        {
+                            type:"value",
+                            axisLine:{
+                                LineStyle:{
+                                    color:"#17b3a3",
+                                },
+                            }
+                        }
+                    ],
+                    color:["#2ec7c9","#b6a2de","#5ab1ef","#fffb980","#d87a80","#8d98b3"],
+                    series:[]
+                },
+                user:{
+                    //图例文字颜色
+                    legend:{
+                        textStyle:{
+                            color:"#333"
+                        }
+                    },
+                    grid:{
+                        left:"20%"
+                    },
+                    tooltip:{
+                        trigger:"axis"
+                    },
+                    xAxis:{
+                        type:"category", //类目轴
+                        data:[],
+                        axisLine:{
+                            LineStyle:{
+                                color:"#17b3a3"
+                            }
+                        },
+                        axisLable:{
+                            interval:0,
+                            color:"#333"
+                        }
+                    },
+                    yAxis:[
+                        {
+                            type:"value",
+                            axisLine:{
+                                LineStyle:{
+                                    color:"#17b3a3"
+                                }
+                            }
+                        }
+                    ],
+                    color:["#2ec7c9","#b6a2de"],
+                    series:[],
+
+                },
+                video:{
+                    tooltip:{
+                        trigger:"item"
+                    },
+                    color:[
+                        "#0f78f4",
+                        "#dd536b",
+                        "#9462e5",
+                        "#a6a6a6",
+                        "#e1bb22",
+                        "#39c362",
+                        "#3ed1cf",
+                    ],
+                    series:[]
+                }
+            }   
+        } 
     },
+    methods:{
+      getTableData(){
+          getHome().then((res) => {
+              console.log(res);
+           this.tableData=res.data.tableData  
+           
+           
+           //折线图展示
+           const order=res.data.orderData
+           console.log(res.data.orderData);
+           this.echartsData.order.xAxis.data=order.date
+           let keyArray = Object.keys(order.data[0])
+           keyArray.forEach((key)=>{
+               this.echartsData.order.series.push({
+                   name:key,
+                   data:order.data.map((item) => item[key]),
+                   type:"line"
+               })
+           })
+           const myEcharsOrder = echarts.init(this.$refs.echart)
+           myEcharsOrder.setOption(this.echartsData.order)
+
+           //用户图
+            this.echartsData.user.xAxis.data = res.data.userData.map((item)=>item.date) 
+            
+            this.echartsData.user.series.push({
+                name:'新增用户',
+                data:res.data.userData.map((item)=>item.new),
+                type:"bar"
+            })
+            this.echartsData.user.series.push({
+                name:'活跃用户',
+                data:res.data.userData.map((item)=>item.active),
+                type:"bar"
+            })
+
+            const myEcharsUser = echarts.init(this.$refs.echartUser)
+            myEcharsUser.setOption(this.echartsData.user)
+
+            //饼状图
+            this.echartsData.video.series.push({
+                data:res.data.videoData,
+                type:"pie",
+            })
+
+            const myEcharsVideo = echarts.init(this.$refs.echartVideo)
+            myEcharsVideo.setOption(this.echartsData.video)
+
+        })
+      }  
+    },
+
+
     mounted(){
-        this.$http
-            .get('/user?ID=12345')
-        .then(function (response) {    
-            console.log(response);
-        })
-        .catch(function (error) {
-             console.log(error);
-        })
+       this.getTableData()
     }
 }
 </script>

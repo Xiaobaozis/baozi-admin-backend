@@ -32,7 +32,7 @@
         :index="subItem.path" 
         v-for="(subItem,subIndex) in item.children" 
         :key="subIndex"
-        @click="clickMenu(item)"
+        @click="clickMenu(subItem)"
         >
         <i :class="'el-icon-'+ subItem.icon"></i>
         <span slot="title">{{subItem.label}}</span>
@@ -59,7 +59,7 @@
           },
           {
             path:"/mall",
-            name:"mall",
+            name:"Mall",
             label:"商品管理",
             icon:"video-play",
             url:"MallMange/MallMange"
@@ -102,7 +102,10 @@
       //   console.log(key, keyPath);
       // },
       clickMenu(item){
-        this.$router.push({name:item.name})
+        console.log(1);
+        console.log(item);
+        this.$router.push(item.path)
+        this.$store.commit('selectMenu', item)
       }
     },
     computed:{

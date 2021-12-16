@@ -1,8 +1,8 @@
 // 拦截器
-
 import axios from 'axios'
-//设置配置
-const baseUrl = '/api'
+import config from '../config/index'
+//设置配置  根据开发 和生产环境不一样
+const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
 
 class HttpRequst {
     constructor(baseUrl) {
@@ -31,7 +31,7 @@ class HttpRequst {
         instance.interceptors.response.use(function(response) {
             // 对应用数据做点什么
             console.log('处理响应');
-            return response;
+            return response.data;
         }, function(error) {
             console.log(error);
             // 对响应错误做点什么
