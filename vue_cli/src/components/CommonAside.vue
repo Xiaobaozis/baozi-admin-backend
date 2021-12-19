@@ -66,7 +66,7 @@
           },
           {
             path:"/user",
-            name:"user",
+            name:"User",
             label:"用户管理",
             icon:"user",
             url:"UserMange/UserMange"

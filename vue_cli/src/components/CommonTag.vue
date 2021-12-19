@@ -1,13 +1,13 @@
 <template>
   <div class="tabs">
     <el-tag 
-    v-for="tag in tags" 
+    v-for="(tag,index) in tags" 
     :key="tag.name"
     size="small"
     :closable="tag.name !== 'home'"
-    :effect =
-    "$router.name ===tag.name ? 'dark' : 'plain'"
-
+    :effect ="$route.name === tag.name ? 'dark' :'plain'"
+    @click="changeMenu(tag)"
+    @close="handleClose(tag,index)"
     >
         {{tag.label}} 
     </el-tag>
@@ -15,13 +15,44 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapState,mapMutations} from 'vuex'
 export default {
     computed:{
        ...mapState({           
             tags:(state) =>state.tab.tabsList
         }),
-    }
+    },
+    methods:{
+        ...mapMutations({
+            close:'closeTag'
+        }),
+        //点击添加
+        changeMenu(item){
+            this.$router.push({name:item.name})
+            this.$store.commit("selectMenu",item)
+        },
+        //删除
+        handleClose(tag,index){
+            
+             let length =this.tags.length - 1
+            this.close(tag)
+            //判断是否是最后一个  
+            //第一种情况
+            if(tag.name!==this.$route.name){
+                return;
+            }
+
+
+            if(index===length){
+                //往左边跳转
+                this.$router.push({name:this.tags[index-1].name})
+            }else{
+                //往右边跳转
+                this.$router.push({name:this.tags[index].name})
+            }
+        },
+    },
+    
 }
 </script>
 

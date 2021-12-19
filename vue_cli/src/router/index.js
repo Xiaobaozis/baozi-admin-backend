@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
+import MallDetail from '../views/Mall/MallDetail'
+//解决路由点击重复的问题
+const originPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+    return originPush.call(this, location).catch(err => err)
+}
 Vue.use(VueRouter)
 
 const routes = [{
@@ -17,8 +23,20 @@ const routes = [{
                 path: '/mall',
                 name: 'Mall',
                 component: () =>
-                    import ('@/views/Mall/Mall')
-            }, {
+                    import ('@/views/Mall/Mall'),
+                children: [{
+                    path: '/mallDetail',
+                    name: 'MallDetail',
+                    component: MallDetail
+                }],
+            },
+            // {
+            //     path: '/mallDetail',
+            //     name: 'MallDetail',
+            //     component: MallDetail
+
+            // },
+            {
                 path: '/user',
                 name: 'User',
                 component: () =>

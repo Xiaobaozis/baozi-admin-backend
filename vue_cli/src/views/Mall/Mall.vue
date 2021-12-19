@@ -44,7 +44,7 @@
       label="操作"
       width="180">
       <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+        <el-button  @click="handleClick"  type="text" size="small">查看</el-button>
         <el-button type="text" size="small">编辑</el-button>
       </template>
     </el-table-column>  
@@ -82,6 +82,12 @@
           return 'success-row';
         }
         return '';
+      },
+      handleClick(){
+         this.$router.push({
+          path: `/mall/mallDetail`    
+         })
+         console.log(11111111);
       }
     },
     data() {
@@ -118,4 +124,4 @@
       }
     }
   }
-</script>s
+</script>
